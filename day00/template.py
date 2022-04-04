@@ -3,14 +3,14 @@ Name : template.py.py
 Author : André Pinto
 Contact : andret13pinto@hotmail.com
 Time    : 04/04/2022 09:16
-Desc:
+Desc: From https://github.com/anthonywritescode/aoc2019/blob/master/day00/template.py
 """
 
 import argparse
 
 import pytest
 
-from support import timing
+#from support import timing
 
 
 def compute(s: str) -> int:
@@ -21,7 +21,7 @@ def compute(s: str) -> int:
 @pytest.mark.parametrize(
     ('input_s', 'expected'),
     (
-        # put given test cases here
+          # put tests here
     ),
 )
 def test(input_s: str, expected: int) -> None:
@@ -33,9 +33,8 @@ def main() -> int:
     parser.add_argument('data_file')
     args = parser.parse_args()
 
-    with open(args.data_file) as f, timing():
+    with open(args.data_file) as f:
         print(compute(f.read()))
-
     return 0
 
 
