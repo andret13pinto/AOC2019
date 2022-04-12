@@ -8,12 +8,12 @@ Desc: From https://github.com/anthonywritescode/aoc2019/blob/master/day00/templa
 
 import argparse
 import pytest
-from typing import Dict, Set, Optional
+from typing import Dict, Set
 
 node_dict: Dict[str, 'Node'] = {}
 
 class Node:
-    def __init__(self, name: str, **kwargs: str) -> None:
+    def __init__(self, name: str, **kwargs) -> None:
         self.name :str = name
         self.parents : Set[str] = set()  
         self.children : Set[str] = set()
