@@ -16,31 +16,43 @@ class Node(NamedTuple):
     name: str
 
 
-def read_map(s: str):
+def read_map(s: str) -> Dict:
     node_dict: Dict[str, NamedTuple] = {'COM': Node('', 'COM')}
     for line in s.splitlines():
         parent, child = line.strip().split(')')
         node_dict[child] = Node(parent, child)
     return node_dict
 
-    
+
 def compute(s: str) -> int:
-    node_dict = read_map(s)
-    final_sum = 0
-    for _, node in node_dict.items():
-        while node.name != 'COM':
-            final_sum += 1
-            node = node_dict[node.parent]
-    return final_sum
+    nodes = read_map(s)
+    node = nodes['YOU']
+    me_path = {}
+    hops = 0
+    while node.name != 'COM':
+        me_path[node.name] = hops
+        node = nodes[node.parent]
+        hops += 1
+    node = nodes['SAN']
+    hops = 0
+    san_path = {}
+    while node.name != 'COM':
+        san_path[node.name] = hops
+        node = nodes[node.parent]
+        hops += 1
+    candidates = {node: hops for node, hops in me_path.items() if node in san_path.keys()}
+    min_node = min(candidates, key=candidates.get)
+    print(san_path[min_node], me_path[min_node])
+    return san_path[min_node] + me_path[min_node] - 2
 
 
-test_string = "COM)B\n B)C\n C)D\n D)E\n E)F\n B)G\n G)H\n D)I\n E)J\n J)K\n K)L"
+test_string = "COM)B\n B)C\n C)D\n D)E\n E)F\n B)G\n G)H\n D)I\n E)J\n J)K\n K)L\n K)YOU\n I)SAN"
 
 
 @pytest.mark.parametrize(
     ('input_s', 'expected'),
     (
-        (test_string, 42),
+        (test_string, 4),
     ),
 )
 def test(input_s: str, expected: int) -> None:
